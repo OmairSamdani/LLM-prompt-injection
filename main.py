@@ -1,16 +1,35 @@
-    # This is a sample Python script.
+from openai import OpenAI
+import time
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+client = OpenAI(
+    base_url = "https://integrate.api.nvidia.com/v1",
+    api_key = "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"
+)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+try:
+    starttime= time.perf_counter()
+    completion = client.chat.completions.create(
+        model="deepseek-ai/deepseek-v4-flash",
+        messages=[{"role": "user", "content": "Hi, how are you?"}],
+        temperature=1,
+        top_p=0.95,
+        max_tokens=100,
+        extra_body={"chat_template_kwargs": {"thinking": True, "reasoning_effort": "high"}},
+        stream=False
+    )
+    reasoning = getattr(completion.choices[0].message, "reasoning", None) or getattr(completion.choices[0].message,
+                                                                                     "reasoning_content", None)
+    if reasoning:
+        print(reasoning)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    endtime = time.perf_counter()
+    print(completion.choices[0].message.content)
+    print(endtime - starttime)
+
+except Exception as e:
+    print(e)
+
+# Hi there! 👋 How can I help you today?
+# Took this long to run 73.9912975999996s
+# 65 seconds second try
