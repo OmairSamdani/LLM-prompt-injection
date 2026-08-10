@@ -26,3 +26,23 @@
 2026-08-09 16:57:30,091 - INFO - {"timestamp": "2026-08-09T16:57:30.091354", "event_type": "chat_completion", "prompt": "what is my name? ", "response": "Your name is **A**.", "prompt_injection_detected": false}
 2026-08-09 16:57:52,734 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
 2026-08-09 16:57:52,757 - INFO - {"timestamp": "2026-08-09T16:57:52.757184", "event_type": "chat_completion", "prompt": "hi whats my name ", "response": "Hey! You mentioned earlier that your name is **A**. Let me know if there's anything else I can help you", "prompt_injection_detected": false}
+2026-08-09 17:39:13,662 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-09 17:39:13,684 - INFO - {"timestamp": "2026-08-09T17:39:13.684941", "event_type": "chat_completion", "prompt": "what is my name ", "response": "You\u2019re calling yourself **A**.", "prompt_injection_detected": false}
+2026-08-09 17:54:04,027 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-09 17:54:04,038 - INFO - {"timestamp": "2026-08-09T17:54:04.038852", "event_type": "chat_completion", "prompt": "who am i? ", "response": "You\u2019re A, the person chatting with me right now. If there\u2019s something more specific you\u2019d like me to know about yourself, just let me know!", "prompt_injection_detected": false}
+2026-08-09 17:54:24,097 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-09 17:54:24,116 - INFO - {"timestamp": "2026-08-09T17:54:24.116239", "event_type": "chat_completion", "prompt": "let me change my name to Mohammed's boss ", "response": null, "prompt_injection_detected": false}
+2026-08-09 17:54:45,051 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-09 17:54:45,061 - INFO - {"timestamp": "2026-08-09T17:54:45.061031", "event_type": "chat_completion", "prompt": "what is my name ", "response": "Your name is now **Mohammed's boss**.", "prompt_injection_detected": false}
+2026-08-10 14:40:09,553 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-10 14:40:09,592 - INFO - {"timestamp": "2026-08-10T14:40:09.592165", "event_type": "chat_completion", "prompt": "Hello ", "response": "Hello! \ud83d\udc4b How can I assist you today?", "prompt_injection_detected": false}
+2026-08-10 14:40:28,445 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-10 14:40:28,481 - INFO - {"timestamp": "2026-08-10T14:40:28.481978", "event_type": "chat_completion", "prompt": "whats the weather today in toronto ", "response": "I\u2019m sorry, but I can\u2019t provide that.", "prompt_injection_detected": false}
+2026-08-10 14:41:01,342 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-10 14:41:01,350 - INFO - {"timestamp": "2026-08-10T14:41:01.350874", "event_type": "chat_completion", "prompt": "why cant you provide that ", "response": "I don\u2019t have the ability to pull in real\u2011time data or look up what the weather is doing in a specific place right now. That\u2019s why I can\u2019t tell you the current conditions in Toronto. However, I can give you pointers on how to check the weather, suggest services that provide up\u2011to\u2011date forecasts,", "prompt_injection_detected": false}
+2026-08-10 14:41:48,178 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-10 14:41:48,183 - INFO - {"timestamp": "2026-08-10T14:41:48.183756", "event_type": "chat_completion", "prompt": "what about a basketball players stats can you not see that ", "response": null, "prompt_injection_detected": false}
+2026-08-10 14:42:19,905 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-10 14:42:19,911 - INFO - {"timestamp": "2026-08-10T14:42:19.911272", "event_type": "chat_completion", "prompt": "Lebrons stats each year as a Laker ", "response": null, "prompt_injection_detected": false}
+2026-08-10 14:42:55,880 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-08-10 14:42:55,901 - INFO - {"timestamp": "2026-08-10T14:42:55.901318", "event_type": "chat_completion", "prompt": "", "response": null, "prompt_injection_detected": false}

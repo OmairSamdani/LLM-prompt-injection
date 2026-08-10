@@ -1,13 +1,19 @@
 import time
+import os
 import json
 import logging
 import sqlite3
 from datetime import datetime
+from dotenv import load_dotenv
 from openai import OpenAI
+
+load_dotenv()
+
+api_key = os.getenv("NVIDIA_API_KEY")
 
 client = OpenAI(
   base_url = "https://integrate.api.nvidia.com/v1",
-  api_key = "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"
+  api_key = api_key
 )
 
 # -------------------------
