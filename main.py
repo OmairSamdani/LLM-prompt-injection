@@ -6,6 +6,7 @@ import sqlite3
 from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
+import uuid
 
 load_dotenv()
 
@@ -43,16 +44,62 @@ connection = sqlite3.connect("chatbot.db")
 
 cursor = connection.cursor()
 
+
+# -------------------------
+# User Selection
+# -------------------------
+
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS messages(
-id INTEGER PRIMARY KEY,
-role TEXT,
-content TEXT
-)
+SELECT user_id, username
+FROM users
+ORDER BY user_id
 """)
 
+users = cursor.fetchall()
+
+print("\nAvailable users:")
+
+for user_id, username in users:
+    print(f"{user_id}. {username}")
+
+while True:
+    try:
+        selected_user_id = int(input("\nSelect your user ID: "))
+
+        if any(user_id == selected_user_id for user_id, _ in users):
+            break
+
+        print("Invalid user ID.")
+
+    except ValueError:
+        print("Please enter a number.")
+
+# Get username
+cursor.execute("""
+SELECT username
+FROM users
+WHERE user_id = ?
+""", (selected_user_id,))
+
+username = cursor.fetchone()[0]
+
+print(f"\nSigned in as: {username}")
+
+# -------------------------
+# Create Session
+# -------------------------
+
+session_id = str(uuid.uuid4())
+
+cursor.execute("""
+INSERT INTO sessions (session_id, user_id)
+VALUES (?, ?)
+""", (session_id, selected_user_id))
 
 connection.commit()
+
+print(f"Session started: {session_id}")
+
 
 # -------------------------
 # Logging setup
@@ -65,11 +112,12 @@ logging.basicConfig(
 )
 
 
-def log_event(event_type, prompt, response=None, flagged=False):
+def log_event(event_type, prompt, reasoning, response=None, flagged=False):
     event = {
         "timestamp": datetime.now().isoformat(),
         "event_type": event_type,
         "prompt": prompt,
+        "reasoning": reasoning,
         "response": response,
         "prompt_injection_detected": flagged
     }
@@ -90,22 +138,21 @@ conversation = [
 # Created a empty list to track the conversations
 # Changed it from an empty list to now having a system prompt that needs to be kept secret
 
-cursor.execute(
-"""
+cursor.execute("""
 SELECT role, content
 FROM messages
-ORDER BY id
-"""
-)
+WHERE session_id = ?
+ORDER BY id DESC
+LIMIT 20
+""", (session_id,))
 
-for role, content in cursor.fetchall():
+rows = cursor.fetchall()
 
-    conversation.append(
-        {
-            "role": role,
-            "content": content
-        }
-    )
+for role, content in reversed(rows):
+    conversation.append({
+        "role": role,
+        "content": content
+    })
 
 
 try:
@@ -119,12 +166,13 @@ try:
                 "content": usermsg
             }
         )
+
         cursor.execute(
             """
-            INSERT INTO messages(role, content)
-            VALUES (?,?)
+            INSERT INTO messages(session_id, role, content)
+            VALUES (?, ?, ?)
             """,
-            ("user", usermsg)
+            (session_id, "user", usermsg)
         )
         starttime = time.perf_counter()
         completion = client.chat.completions.create(
@@ -138,6 +186,8 @@ try:
 
         reasoning = getattr(completion.choices[0].message, "reasoning_content", None)
         response = completion.choices[0].message.content
+        if not response:
+            response = "I'm sorry, but I can't help with that request."
         # print(completion, type(completion))
 
         conversation.append(
@@ -146,20 +196,21 @@ try:
                 "content": response
             }
         )
+
         cursor.execute(
             """
-            INSERT INTO messages(role, content)
-            VALUES (?,?)
+            INSERT INTO messages(session_id, role, content)
+            VALUES (?, ?, ?)
             """,
-            ("assistant", response)
+            (session_id, "assistant", response)
         )
 
         connection.commit()
 
         if reasoning:
-            print(reasoning)
+            print(f"Reasoning: {reasoning}")
 
-        print(response)
+        print(f"Response: {response}")
 
         endtime = time.perf_counter()
 
@@ -171,6 +222,7 @@ try:
         log_event(
             event_type="chat_completion",
             prompt=usermsg,
+            reasoning = reasoning,
             response=response,
             flagged=False
         )
